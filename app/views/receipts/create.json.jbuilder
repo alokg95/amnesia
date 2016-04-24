@@ -1,0 +1,1 @@
+json.receipt @receipt
