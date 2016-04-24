@@ -1,4 +1,3 @@
 class Receipt < ActiveRecord::Base
-  belongs_to :user
-  has_one :drug
+  has_many :drug
 end
