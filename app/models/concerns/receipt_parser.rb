@@ -71,6 +71,11 @@ class ReceiptParser
     end
 
     list = @drug_list.zip(@price_list).map { |w1, w2| { w1 => w2 } }
+    list << { 'date' => @cleaned_arr.last.split.first }
+
+    hash = list.reduce Hash.new, :merge
+    hash['pharmacy_name'] = 'CVS'
+    hash
   end
 
 
