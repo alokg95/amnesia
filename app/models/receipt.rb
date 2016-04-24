@@ -6,7 +6,6 @@ class Receipt < ActiveRecord::Base
   has_many :drugs
   
   def self.from_ocr_content(content)
-    content = Base64.decode(content)
     drugs_hash = ReceiptParser.new.parse_receipt content
     drugs = drugs_hash.map do |key, value| 
       if value.is_a? Float
