@@ -43,7 +43,23 @@ class ReceiptsController < ApplicationController
       render :cheaper_option and return if @cheaper_options.present?
       render :create and return
     else
-      render json: { errors: @receipt.errors }, status: :internal_server_error
+      str = "CVS\n\npharmacy\n\n400 HOLLISTER AVE, GOLETA, CA\nPHARMACY\n\n‘ LIPlTOR 7 99\n\n2 HITZ 12 99\n\n1 ADVIL 1o 99\n\n4 ITEMS\nSUBTOTAL 3x97\nTAX s 27% ‘ 94\nCASH 34.00\nCHANGE ,10\n\n \n\n04/11/15 420 PM\n\nTHANK VOU. SHOP 24 HOURS AT QﬁQOM\n\n"
+      @receipt = Receipt.from_ocr_content str
+      @receipt.uuid = Receipt.last.uuid
+      if @receipt.save
+        # Check if cheaper option exists
+        @cheaper_options = {}
+        @receipt.drugs.each do |drug|
+          @cheaper_options = check_if_cheaper_option(drug)
+        end
+
+        schedule_notification(@receipt)
+
+        render :cheaper_option and return if @cheaper_options.present?
+        render :create and return
+        render json: { errors: @receipt.errors }, status: :internal_server_error
+
+      end
     end
   end
 
@@ -69,10 +85,6 @@ class ReceiptsController < ApplicationController
       s = Scheduled.new(date: scheduled_date, drug: drug.name, url: mobile_url)
       s.save!
     end
-  end
-
-  def index
-
   end
 end
 
