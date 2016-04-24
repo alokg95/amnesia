@@ -1,6 +1,7 @@
 class ReceiptsController < ApplicationController
   def create
-    @receipt = Receipt.from_ocr_content params[:content]
+    @receipt = Receipt.from_ocr_content params[:contents]
+    @receipt.uuid = params[:uuid]
     if @receipt.save
       render :create and return
     else

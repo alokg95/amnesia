@@ -8,13 +8,13 @@ class Receipt < ActiveRecord::Base
     drugs_hash = ReceiptParser.new.parse_receipt content
     drugs = drugs_hash.map do |key, value| 
       if value.is_a? Float 
-        Drug.create(name: key, price: value)
+        Drug.new(name: key, price: value)
       end
     end
     date = DateTime.parse drugs_hash['date']
     pharmacy = drugs_hash['pharmacy_name']
-    receipt = Receipt.new(pharmacy_name: pharmacy_name, date: date)
-    receipt.drugs << drugs
+    receipt = Receipt.new(pharmacy_name: pharmacy, date: date)
+    receipt.drugs << drugs.compact
     receipt
   end
 end
