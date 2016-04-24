@@ -1,10 +1,6 @@
 class ReceiptsController < ApplicationController
   def create
-    receipt_data = params[:receipt]
-      
-
-
-
+    puts params
   end
 
   def index
