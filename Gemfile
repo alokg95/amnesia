@@ -16,6 +16,7 @@ gem 'pg'
 gem 'rails_12factor'
 gem 'jbuilder'
 
+gem 'activerecord-postgresql-adapter'
 
 
 # To use ActiveModel has_secure_password
