@@ -1,14 +1,20 @@
 class ReceiptParser
 
-  def self.parse_receipt(str)
+  def initialize()
+    @matched_words = []
+    @drug_lines = []
+    @drug_list = []
+    @cleaned_arr = []
+    @price_list = []
+  end
 
-    def numeric?(char)
-      char =~ /[[:digit:]]/
+  def parse_receipt(str)
+
+    numeric = lambda do |char|
+      return char =~ /[[:digit:]]/
     end
 
-
-    @matched_words = []
-    def get_drug(word)
+    get_drug = lambda do |word|
       num_char_common = 0
       most_common_word = nil
       drugs = ["lipitor", "advil", "viagra"]
@@ -22,9 +28,8 @@ class ReceiptParser
       end
       return most_common_word if num_char_common > word.length/2
     end
-    @drug_lines = []
-
-    def get_price(word)
+    
+    get_price = lambda do |word|
       @cleaned_arr.each do |input|
         if input.include?(word)
           @drug_lines << input
@@ -33,29 +38,28 @@ class ReceiptParser
     end
 
     input_arr = str.split("\n")
-    @cleaned_arr = []
+    
     input_arr.each do |input|
       unless input.empty?
         line = input.strip.downcase
-        if numeric?(line[-1]) || numeric?(line[0])
-          if numeric?(line[1]) || line[1] == " "
+        if numeric.call(line[-1]) || numeric.call(line[0])
+          if numeric.call(line[1]) || line[1] == " "
             @cleaned_arr << line
           end
 
         end
       end
     end
-    @drug_list = []
+    
     @cleaned_arr.each do |input|
       line_arr = input.split(" ")
       word = line_arr[1]
-      drug_word = get_drug(word)
+      drug_word = get_drug.call(word)
       @drug_list << drug_word if drug_word
     end
 
-    @price_list = []
     @matched_words.each do |input|
-      get_price(input)
+      get_price.call(input)
       @drug_lines.each do |line|
         if line.include?(input)
           index = line.index(input) + input.length
