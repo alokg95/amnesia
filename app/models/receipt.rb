@@ -11,7 +11,7 @@ class Receipt < ActiveRecord::Base
         Drug.new(name: key, price: value)
       end
     end
-    date = DateTime.strptime(drugs_hash['date'], "%m/%d/%Y")
+    date = DateTime.strptime(drugs_hash['date'], "%m/%d/%y")
     pharmacy = drugs_hash['pharmacy_name']
     receipt = Receipt.new(pharmacy_name: pharmacy, date: date)
     receipt.drugs << drugs.compact
