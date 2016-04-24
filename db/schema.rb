@@ -11,11 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160423082504) do
+ActiveRecord::Schema.define(version: 20160424120648) do
 
   create_table "drugs", force: :cascade do |t|
     t.integer  "receipt_id"
     t.string   "name"
+    t.string   "vendor"
     t.decimal  "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -34,5 +35,13 @@ ActiveRecord::Schema.define(version: 20160423082504) do
 
   add_index "receipts", ["receipt_id"], name: "index_receipts_on_receipt_id"
   add_index "receipts", ["uuid"], name: "index_receipts_on_uuid"
+
+  create_table "scheduleds", force: :cascade do |t|
+    t.datetime "date"
+    t.string   "drug"
+    t.string   "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end

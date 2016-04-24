@@ -7,8 +7,8 @@ class Receipt < ActiveRecord::Base
   def self.from_ocr_content(content)
     drugs_hash = ReceiptParser.new.parse_receipt content
     drugs = drugs_hash.map do |key, value| 
-      if value.is_a? Float 
-        Drug.new(name: key, price: value)
+      if value.is_a? Float
+        Drug.new(name: key, price: value, vendor: drugs_hash["pharmacy_name"])
       end
     end
     date = DateTime.strptime(drugs_hash['date'], "%m/%d/%y")
