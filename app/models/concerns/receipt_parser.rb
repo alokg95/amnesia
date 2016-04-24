@@ -63,7 +63,7 @@ class ReceiptParser
       @drug_lines.each do |line|
         if line.include?(input)
           index = line.index(input) + input.length
-          price = line[index..line.length].strip.sub(/ /, ".").sub(/[o]/, "0").sub(/[il]/, "1")
+          price = line[index..line.length].strip.sub(/ /, ".").sub(/[o]/, "0").sub(/[il]/, "1").to_f
           # puts price
           @price_list << price
         end

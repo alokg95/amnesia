@@ -1,10 +1,11 @@
 class ReceiptsController < ApplicationController
   def create
-    puts params
-    drugs = ["lipitor", "advil", "viagra"]
-
-
-    render :create
+    @receipt = Receipt.from_ocr_content params[:content]
+    if @receipt.save
+      render :create and return
+    else
+      render json: { errors: @receipt.errors }, status: :internal_server_error
+    end
   end
 
   def index
